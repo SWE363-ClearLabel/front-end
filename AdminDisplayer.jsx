@@ -11,20 +11,18 @@ export default class AdminDisplayer extends State {
         // main admin state
         this.state = {
             showProfile: false,
-            filter: "all",
+            filter: "user",
             currentView: "dashboard",
-
-            // mock data for filters
             data: {
-                all: {
+                user: {
                     savedImages: 12654,
                     positiveClicks: 9854,
                     negativeClicks: 3654,
                     topIngredients: ["Xanthan Gum", "Pectin", "Satra"],
                     summary: [
-                        "Most users marked stabilizers as safe.",
-                        "Some flagged synthetic additives.",
-                        "Saved scans increased."
+                        "Registered users saved more scans.",
+                        "Higher engagement on detailed pages.",
+                        "More consistent usage patterns."
                     ],
                     classification: {
                         safe: 52,
@@ -32,19 +30,19 @@ export default class AdminDisplayer extends State {
                         high: 20
                     }
                 },
-                online: {
-                    savedImages: 8450,
-                    positiveClicks: 6210,
-                    negativeClicks: 2100,
-                    topIngredients: ["Pectin", "Citric Acid", "Xanthan Gum"],
+                guest: {
+                    savedImages: 4300,
+                    positiveClicks: 2100,
+                    negativeClicks: 950,
+                    topIngredients: ["Citric Acid", "Sodium Benzoate", "Color Additives"],
                     summary: [
-                        "Online users saved more scans.",
-                        "Positive clicks dominate.",
-                        "Moderate ingredients reviewed often."
+                        "Guests interact less frequently.",
+                        "Higher drop-off rate after scanning.",
+                        "Less engagement with detailed info."
                     ],
                     classification: {
-                        safe: 48,
-                        moderate: 32,
+                        safe: 45,
+                        moderate: 35,
                         high: 20
                     }
                 }
@@ -66,30 +64,86 @@ export default class AdminDisplayer extends State {
         });
     }
 
-    // change view (dashboard / detail)
+    // change view
     setView(view) {
         this.setState({
             currentView: view
         });
     }
 
-    // main dashboard UI
+    // filter buttons
+    renderFilterButtons() {
+        return (
+            <div style={{ marginTop: "20px" }}>
+                <p style={{ marginBottom: "10px", fontWeight: "bold", color: "#333" }}>
+                    FILTER USERS
+                </p>
+
+                <button
+                    onClick={() => this.setFilter("guest")}
+                    style={{
+                        border: "none",
+                        borderRadius: "20px",
+                        padding: "9px 18px",
+                        backgroundColor: this.state.filter === "guest" ? "#b8b8b8" : "#ececec",
+                        color: "#222",
+                        cursor: "pointer",
+                        fontWeight: "bold"
+                    }}
+                >
+                    GUEST
+                </button>
+
+                <button
+                    onClick={() => this.setFilter("user")}
+                    style={{
+                        marginLeft: "10px",
+                        border: "none",
+                        borderRadius: "20px",
+                        padding: "9px 18px",
+                        backgroundColor: this.state.filter === "user" ? "#b8b8b8" : "#ececec",
+                        color: "#222",
+                        cursor: "pointer",
+                        fontWeight: "bold"
+                    }}
+                >
+                    USER
+                </button>
+            </div>
+        );
+    }
+
+    // main dashboard
     renderDashboard(currentData) {
         return (
             <>
-                <div style={{ marginTop: "20px" }}>
-                    <p>FILTER USERS</p>
-                    <button onClick={() => this.setFilter("online")}>ONLINE</button>
-                    <button onClick={() => this.setFilter("all")} style={{ marginLeft: "10px" }}>
-                        ALL
-                    </button>
-                </div>
+                {this.renderFilterButtons()}
 
                 <AdminPanel title="USER LOCATION MAP">
-                    <p>Map placeholder</p>
+                    <div
+                        style={{
+                            height: "230px",
+                            borderRadius: "20px",
+                            backgroundColor: "#efefef",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "#666",
+                            fontSize: "18px"
+                        }}
+                    >
+                        Map placeholder
+                    </div>
                 </AdminPanel>
 
-                <div style={{ display: "flex", gap: "20px", marginTop: "20px", flexWrap: "wrap" }}>
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "18px",
+                        marginTop: "22px",
+                        flexWrap: "wrap"
+                    }}
+                >
                     <AdminStatCard title="SAVED IMAGES" value={currentData.savedImages} />
 
                     <AdminStatCard
@@ -108,41 +162,68 @@ export default class AdminDisplayer extends State {
         );
     }
 
-    // detail view for positive / negative clicks
+    // positive / negative details
     renderDetailView(title, totalValue, currentData) {
         return (
             <>
                 <button
                     onClick={() => this.setView("dashboard")}
-                    style={{ marginTop: "20px", marginBottom: "20px" }}
+                    style={{
+                        marginTop: "20px",
+                        marginBottom: "10px",
+                        border: "none",
+                        borderRadius: "16px",
+                        padding: "10px 18px",
+                        backgroundColor: "#d9d9d9",
+                        cursor: "pointer",
+                        fontWeight: "bold"
+                    }}
                 >
                     BACK
                 </button>
 
                 <AdminPanel title={title}>
-                    <h2>{totalValue}</h2>
+                    <div
+                        style={{
+                            fontSize: "42px",
+                            fontWeight: "bold",
+                            color: "#222"
+                        }}
+                    >
+                        {totalValue}
+                    </div>
                 </AdminPanel>
 
-                <AdminPanel title="TOP INGREDIENTS">
-                    <ul>
-                        {currentData.topIngredients.map((item, index) => (
-                            <li key={index}>{item}</li>
-                        ))}
-                    </ul>
-                </AdminPanel>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: "20px"
+                    }}
+                >
+                    <AdminPanel title="TOP INGREDIENTS">
+                        <ul style={{ margin: 0, paddingLeft: "20px", color: "#222", lineHeight: "1.9" }}>
+                            {currentData.topIngredients.map((item, index) => (
+                                <li key={index}>{item}</li>
+                            ))}
+                        </ul>
+                    </AdminPanel>
 
-                <AdminPanel title="SUMMARY INSIGHTS">
-                    <ul>
-                        {currentData.summary.map((item, index) => (
-                            <li key={index}>{item}</li>
-                        ))}
-                    </ul>
-                </AdminPanel>
+                    <AdminPanel title="SUMMARY INSIGHTS">
+                        <ul style={{ margin: 0, paddingLeft: "20px", color: "#222", lineHeight: "1.9" }}>
+                            {currentData.summary.map((item, index) => (
+                                <li key={index}>{item}</li>
+                            ))}
+                        </ul>
+                    </AdminPanel>
+                </div>
 
                 <AdminPanel title="CLASSIFICATION BREAKDOWN">
-                    <p>Safe: {currentData.classification.safe}%</p>
-                    <p>Moderate: {currentData.classification.moderate}%</p>
-                    <p>High Concern: {currentData.classification.high}%</p>
+                    <div style={{ color: "#222", lineHeight: "2" }}>
+                        <p style={{ margin: 0 }}>Safe: {currentData.classification.safe}%</p>
+                        <p style={{ margin: 0 }}>Moderate: {currentData.classification.moderate}%</p>
+                        <p style={{ margin: 0 }}>High Concern: {currentData.classification.high}%</p>
+                    </div>
                 </AdminPanel>
             </>
         );
@@ -152,40 +233,72 @@ export default class AdminDisplayer extends State {
         const currentData = this.state.data[this.state.filter];
 
         return (
-            <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div>
-                        <h2>CLEAR LABEL</h2>
-                        <p>admin dashboard</p>
+            <div
+                style={{
+                    backgroundColor: "#f4f1eb",
+                    minHeight: "100vh",
+                    padding: "30px"
+                }}
+            >
+                <div
+                    style={{
+                        maxWidth: "1200px",
+                        margin: "0 auto",
+                        fontFamily: "Arial, sans-serif",
+                        position: "relative"
+                    }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center"
+                        }}
+                    >
+                        <div>
+                            <h2 style={{ margin: 0, color: "#222" }}>CLEAR LABEL</h2>
+                            <p style={{ margin: "6px 0 0 0", color: "#555" }}>admin dashboard</p>
+                        </div>
+
+                        <button
+                            onClick={() => this.profileHandler()}
+                            style={{
+                                border: "none",
+                                backgroundColor: "#d9d9d9",
+                                borderRadius: "30px",
+                                padding: "12px 20px",
+                                cursor: "pointer",
+                                fontWeight: "bold",
+                                color: "#222"
+                            }}
+                        >
+                            PROFILE
+                        </button>
                     </div>
 
-                    <button onClick={() => this.profileHandler()}>
-                        PROFILE
-                    </button>
+                    <AdminProfileModal
+                        show={this.state.showProfile}
+                        onClose={() => this.profileHandler()}
+                        onSignOut={() => alert("Signed out")}
+                    />
+
+                    {this.state.currentView === "dashboard" &&
+                        this.renderDashboard(currentData)}
+
+                    {this.state.currentView === "positive" &&
+                        this.renderDetailView(
+                            "TOTAL POSITIVE CLICKS (LAST 60 DAYS)",
+                            currentData.positiveClicks,
+                            currentData
+                        )}
+
+                    {this.state.currentView === "negative" &&
+                        this.renderDetailView(
+                            "TOTAL NEGATIVE CLICKS (LAST 60 DAYS)",
+                            currentData.negativeClicks,
+                            currentData
+                        )}
                 </div>
-
-                <AdminProfileModal
-                    show={this.state.showProfile}
-                    onClose={() => this.profileHandler()}
-                    onSignOut={() => alert("Signed out")}
-                />
-
-                {this.state.currentView === "dashboard" &&
-                    this.renderDashboard(currentData)}
-
-                {this.state.currentView === "positive" &&
-                    this.renderDetailView(
-                        "TOTAL POSITIVE CLICKS (LAST 60 DAYS)",
-                        currentData.positiveClicks,
-                        currentData
-                    )}
-
-                {this.state.currentView === "negative" &&
-                    this.renderDetailView(
-                        "TOTAL NEGATIVE CLICKS (LAST 60 DAYS)",
-                        currentData.negativeClicks,
-                        currentData
-                    )}
             </div>
         );
     }
