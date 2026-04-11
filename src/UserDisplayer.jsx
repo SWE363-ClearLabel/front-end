@@ -1,5 +1,5 @@
 import State from "./State" ;
-import {UserHome} from "./Components/UserHome"
+import {UserHome} from "./components/UserHome"
 
 export const UserDisplayer = () => {
     return(

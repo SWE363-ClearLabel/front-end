@@ -1,8 +1,8 @@
 import React from "react";
 import State from "./State";
-import AdminProfileModal from "./Components/AdminProfileModal";
-import AdminStatCard from "./Components/AdminStatCard";
-import AdminPanel from "./Components/AdminPanel";
+import AdminProfileModal from "./components/AdminProfileModal";
+import AdminStatCard from "./components/AdminStatCard";
+import AdminPanel from "./components/AdminPanel";
 
 export default class AdminDisplayer extends State {
     constructor(props) {
