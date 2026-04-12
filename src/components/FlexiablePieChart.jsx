@@ -21,12 +21,12 @@ PieChart.defaultProps = {
     ] 
 }
 
-function PieChart(props) { // this should be the injection of the info we need to display
+function FlexiablePieChart(props) { // this should be the injection of the info we need to display
 
      const config = {
     title: "USER PROFILE DISTRIBUTION",
     panelBg: "#8b8b8b",      // Background of the whole card
-    textColor: props.textColor,    // Color of all text
+    textColor: "#FFFFFF",    // Color of all text
     chartInnerColor: "#000", // The color of the center hole
     data: props.data ,          // you need to inject this ..
   };
@@ -41,7 +41,7 @@ function PieChart(props) { // this should be the injection of the info we need t
       maxWidth: '450px', // Prevents it from getting too huge on ultra-wide screens
       boxSizing: 'border-box',
       color: config.textColor,
-      fontFamily: props.fontFamily,
+      fontFamily: 'monospace',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -130,4 +130,4 @@ function PieChart(props) { // this should be the injection of the info we need t
 
 
 
-export default PieChart;
+export default FlexiablePieChart ;
