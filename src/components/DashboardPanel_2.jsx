@@ -1,6 +1,6 @@
 import React from 'react';
 // Import the child you already made
-import IngredientTrendTracker from './IngredientTrendTracker'; 
+import IngredientTrendTracker from './IngredientsTrends'; 
 
 
 const DashboardPanel_2 = ({ 

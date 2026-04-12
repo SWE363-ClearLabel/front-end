@@ -12,23 +12,24 @@ data: [
     ] 
 
 */
+const DEFAULT_PIE_DATA = [
+  { name: 'Health-conscious', value: 40, color: '#A5B4FC' },
+  { name: 'allergy-focused', value: 30, color: '#FCA5A5' },
+  { name: 'general info', value: 30, color: '#4B5563' },
+];
 
-PieChart.defaultProps = {
-    data: [
-      { name: 'Health-conscious', value: 40, color: '#A5B4FC' },
-      { name: 'allergy-focused', value: 30, color: '#FCA5A5' },
-      { name: 'general info', value: 30, color: '#4B5563' },
-    ] 
-}
-
-function FlexiablePieChart(props) { // this should be the injection of the info we need to display
-
+function FlexiablePieChart({ 
+    data = DEFAULT_PIE_DATA, // Default value if prop is missing
+    backgroundColor = "#8b8b8b", 
+    textColor = "#FFFFFF",
+    fontFamily = "monospace" 
+}) {
      const config = {
     title: "USER PROFILE DISTRIBUTION",
     panelBg: "#8b8b8b",      // Background of the whole card
     textColor: "#FFFFFF",    // Color of all text
     chartInnerColor: "#000", // The color of the center hole
-    data: props.data ,          // you need to inject this ..
+    data: data ,          // you need to inject this ..
   };
     
   const styles = {

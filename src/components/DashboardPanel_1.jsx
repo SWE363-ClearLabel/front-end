@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import FlexiablePieChart from './FlexiablePieChart';
-import FlexibleEngagementChart from './FlexibleEngagementChart';
+import FlexiableEngagementChart from './FlexiableEngagementChart';
 
 
 
-import UserProfileChart from './UserProfileChart';
 
 const DashboardPanel_1 = ({ 
   panelTitle = "AGGREGATED ANONYMOUS INSIGHTS",
@@ -91,7 +90,7 @@ const DashboardPanel_1 = ({
 
         {/* Right Child: Takes up 1.2 "fractional units" */}
         <div style={{ width: '100%' }}>
-          <FlexibleEngagementChart 
+          <FlexiableEngagementChart 
             monthData={barData}
             backgroundColor="transparent"
             textColor={textColor}

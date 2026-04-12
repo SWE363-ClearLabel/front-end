@@ -6,7 +6,7 @@ import {
   Marker
 } from 'react-simple-maps';
 
-import worldData from '../src/world.json'; 
+import worldData from './world.json'; 
 import * as topojson from 'topojson-client';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import DeckGL from '@deck.gl/react';
