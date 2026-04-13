@@ -8,9 +8,9 @@ import DashboardPanel_3 from './DashboardPanel_3';
 // adding styles and THEME -> passed down 
 // 1. THEME DEFINITION
 const THEME = {
-  backgroundColor: "#2e2b2bff",
+  backgroundColor: "#2e2b2bff",		//dark charcoal #2e2b2bff   dark blue #001B2E
   textColor: "#FFFFFF",
-  fontFamily: "monospace",
+  fontFamily: "Luminari",		// Luminari  ,  Bahnschrift
   accentColor: [0, 255, 255],
   gold: "#FFD700"
 };

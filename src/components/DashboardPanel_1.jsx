@@ -91,7 +91,6 @@ const DashboardPanel_1 = ({
         {/* Right Child: Takes up 1.2 "fractional units" */}
         <div style={{ width: '100%' }}>
           <FlexiableEngagementChart 
-            monthData={barData}
             backgroundColor="transparent"
             textColor={textColor}
             fontFamily={fontFamily}
