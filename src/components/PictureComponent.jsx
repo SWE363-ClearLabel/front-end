@@ -81,7 +81,8 @@ const CameraPortal = ({ onClose }) => {
       top: isExpanded ? 0 : "auto",
       left: isExpanded ? 0 : "auto",
       width: isExpanded ? "100vw" : "100%",
-      height: isExpanded ? "100vh" : "300px", // The resting height in your panel
+      // changing height 300px to auto
+	    height: isExpanded ? "100vh" : "auto", // The resting height in your panel
       backgroundColor: isExpanded ? "rgba(0,0,0,0.85)" : "transparent",
       display: "flex",
       justifyContent: "center",
@@ -93,7 +94,13 @@ const CameraPortal = ({ onClose }) => {
       // DYNAMIC FIX: Take up 100% of the row when small, 100vw when expanded
       width: isExpanded ? "100vw" : "100%",
       maxWidth: "100%",
-      height: isExpanded ? "100vh" : "100%",
+	    // new 
+	    maxHeight : isExpanded ? '100vh' : '70vh' , 
+	    aspectRatio : isExpanded ? 'auto' : '16 / 10',
+	    minHeight  : isExpanded ? '100vh' : '500px',
+	    // finish new code
+
+      height: isExpanded ? "100vh" : "auto",// from 100% to auto
       borderRadius: isExpanded ? "0px" : "24px", // Smooth corners when small
       backgroundColor: "#000",
       position: "relative",

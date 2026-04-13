@@ -52,7 +52,10 @@ const ShowcasePanel = () => {
       padding: "60px 20px",
       backgroundColor: "#121212", // Deep corporate dark background
       minHeight: "100vh",
-      boxSizing: "border-box",
+	WebkitUserSelect : 'none' ,
+	    MozUserSelect : 'none' ,
+	    userSelect : 'none' , 
+	    boxSizing: "border-box",
     },
     rowBounds: {
       width: "100%",
