@@ -1,74 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class ProfileComponent extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const ProfileComponent = ({ backgroundColor = '#3d3d3d' }) => {
+  const [isPressed, setIsPressed] = useState(false);
 
-  // Styles kept inside the class as requested
-  styles = {
-    wrapper: {
-      display: 'flex',
-      flexDirection: 'row', // Align Icon and Text side-by-side
-      alignItems: 'center',
-      gap: '12px',         // Space between icon and text
-      padding: '5px'
-    },
+  const styles = {
     avatarCircle: {
-      width: '40px',
-      height: '40px',
+      width: '100%',
+      maxWidth: '60px',
+      aspectRatio: '1/1',
       borderRadius: '50%',
-      backgroundColor: '#3d3d3d', // Dark circle background
+      backgroundColor: backgroundColor,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      border: '1.5px solid #efebc1', // The Golden Border
+      border: '2px solid #efebc1',
+      cursor: 'pointer',
+      transition: 'all 0.1s ease', // Smooth transition between states
+      
+      // DYNAMIC 3D SHADOW
+      // If pressed: smaller shadow + moved down. If not: deep shadow.
+      boxShadow: isPressed 
+        ? 'inset 0 2px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2)' 
+        : 'inset 0 2px 4px rgba(255,255,255,0.1), 0 6px 12px rgba(0,0,0,0.5)',
+      
+      transform: isPressed ? 'translateY(2px)' : 'translateY(0)',
     },
     icon: {
-      fontSize: '20px',
-      color: '#efebc1'
-    },
-    textStack: {
-      display: 'flex',
-      flexDirection: 'column' // Stack Name over Role
-    },
-    username: {
-      color: '#8f8c6bff',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      lineHeight: '1.2'
-    },
-    role: {
-      color: '#c6c796ff',
-      fontSize: '9px',
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-      letterSpacing: '0.5px'
+      fontSize: '1.5em',
+      color: '#efebc1',
+      opacity: 0.9,
+      lineHeight: 1,
+      display: 'block',
+      // Subtle shrink on the icon when pressed
+      transform: isPressed ? 'scale(0.95)' : 'scale(1)',
+      transition: 'transform 0.1s ease'
     }
   };
 
-  render() {
-    const { username, role, isLoggedIn } = this.props;
-
-    return (
-      <div style={this.styles.wrapper}>
-        {/* --- THE ICON SECTION --- */}
-        <div style={this.styles.avatarCircle}>
-          <span style={this.styles.icon}>👤</span>
-        </div>
-
-        {/* --- THE TEXT SECTION --- */}
-        <div style={this.styles.textStack}>
-          <span style={this.styles.username}>
-            {isLoggedIn ? username : "GUEST"}
-          </span>
-          <span style={this.styles.role}>
-            {role}
-          </span>
-        </div>
-      </div>
-    );
-  }
-}
+  return (
+    <div 
+      style={styles.avatarCircle}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      onMouseLeave={() => setIsPressed(false)} // Reset if mouse drifts away
+    >
+      <span style={styles.icon}>👤</span>
+    </div>
+  );
+};
 
 export default ProfileComponent;
