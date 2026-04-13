@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileComponent from "./ProfileComponent";
-
+import GuestPopUp from './GuestPopUp' ;
 const Header = ({
   title = "CLEAR LABEL",
   fontFamily = '"Courier New", Courier, monospace',
@@ -47,7 +47,7 @@ const Header = ({
     <header style={styles.headerContainer}>
       <h1 style={styles.text3D}>{title}</h1>
       <div style={styles.profileWrapper}>
-        <ProfileComponent />
+        <GuestPopUp />
       </div>
     </header>
   );

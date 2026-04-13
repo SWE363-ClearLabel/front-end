@@ -23,7 +23,7 @@ const Hover3DWrapper = ({ children, onClick }) => {
       width: "100%",
       // We add a subtle background so the shadow has something solid to cast from
       backgroundColor: "#1e1e1e",
-      overflow: "hidden",
+      
     },
   };
 
@@ -74,7 +74,7 @@ const ShowcasePanel = () => {
   return (
     <div style={styles.panelContainer}>
       {/* 1. THE HEADER */}
-      <div style={styles.rowBounds}>
+      <div style={{ ...styles.rowBounds, position: 'relative', zIndex: 50 }}>
         <Hover3DWrapper>
           <Header title="CLEAR LABEL" />
         </Hover3DWrapper>
