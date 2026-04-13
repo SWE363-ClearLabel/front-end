@@ -140,8 +140,7 @@ class MainPanelCorporate extends React.Component {
               backgroundColor={THEME.backgroundColor}
               textColor={THEME.textColor}
               fontFamily={THEME.fontFamily}
-              accentColor={THEME.accentColor}
-            />
+	    />
           </div>
 	</main>
       </div>

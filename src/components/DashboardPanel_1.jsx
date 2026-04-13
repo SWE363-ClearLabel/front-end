@@ -7,9 +7,9 @@ import FlexiableEngagementChart from './FlexiableEngagementChart';
 
 const DashboardPanel_1 = ({ 
   panelTitle = "AGGREGATED ANONYMOUS INSIGHTS",
-  bgColor = "#8b8b8b",
+  backgroundColor = "#8b8b8b",
   textColor = "#FFFFFF",
-  font = "monospace",
+  fontFamily  = "monospace",
   pieData = [], 
   barData = [] 
 }) => {
@@ -18,9 +18,9 @@ const DashboardPanel_1 = ({
   const styles = {
     // Parent container is now 100% width of ITS parent
     wrapper: {
-      backgroundColor: bgColor,
+      backgroundColor: backgroundColor ,
       color: textColor,
-      fontFamily: font,
+      fontFamily: fontFamily,
       padding: '4%', // Padding is now a ratio of width
       borderRadius: '30px',
       width: '100%', 
@@ -81,7 +81,7 @@ const DashboardPanel_1 = ({
           <FlexiablePieChart 
             pieData={pieData} 
             textColor={textColor}
-            fontFamily={font}
+            fontFamily={fontFamily}
           />
         </div>
 
@@ -94,7 +94,7 @@ const DashboardPanel_1 = ({
             monthData={barData}
             backgroundColor="transparent"
             textColor={textColor}
-            fontFamily={font}
+            fontFamily={fontFamily}
             width="100%" 
             height="300px" // Bar chart height can still be fixed or vh/vw
           />
