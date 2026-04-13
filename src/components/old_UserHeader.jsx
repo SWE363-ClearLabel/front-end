@@ -1,7 +1,7 @@
 import React,{ useState } from "react";
 import "./UserHeader.css"
 import profileImg from "../assets/profile.jpg"
-import ProfileComponent from './ProfileComponent'
+
 export const UserHeader = () => {
     const [ShowHamburgerMenu, setShowHamburgerMenu] = useState(false);
     const [BurgerMenuClass, setBurgerMenuClass] = useState("burger-menu hidden");
@@ -47,8 +47,8 @@ export const UserHeader = () => {
                 </div>
 
                 <button className="profile-btn" onClick={updateprofile}>
-                	<ProfileComponent />
-	    	</button>
+                    <img src={profileImg} className="profilepic"></img>
+                </button>
             </header>
 
             <div className={BurgerMenuClass}>

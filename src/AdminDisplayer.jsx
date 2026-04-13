@@ -3,7 +3,7 @@ import State from "./State";
 import AdminProfileModal from "./components/AdminProfileModal";
 import AdminStatCard from "./components/AdminStatCard";
 import AdminPanel from "./components/AdminPanel";
-
+import ProfileComponent from './components/ProfileComponent' 
 export default class AdminDisplayer extends State {
     constructor(props) {
         super(props);
@@ -272,7 +272,7 @@ export default class AdminDisplayer extends State {
                                 color: "#222"
                             }}
                         >
-                            PROFILE
+                            <ProfileComponent backgroundColor = "#ececec" />
                         </button>
                     </div>
 
