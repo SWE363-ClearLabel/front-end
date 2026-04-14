@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ProfileComponent from "./ProfileComponent";
-import AdminPanel from './AdminPanel'
-
+import AdminDisplayer from '../AdminDisplayer' ;
 import MainPanelCorporate from './MainPanelCorporate'
 
 
@@ -49,7 +48,7 @@ const GuestPopUp = ({setCurrentPanel}) => {
 
       // FIRE THE TRIGGER passed from the parent!
       if (setCurrentPanel) {
-        setCurrentPanel(() => AdminPanel);
+        setCurrentPanel(() => AdminDisplayer );
       }
     } else 
     {
