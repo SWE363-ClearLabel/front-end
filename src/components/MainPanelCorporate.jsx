@@ -34,12 +34,26 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: '1rem',
+	  width : '100%' , 
+	  minHeight : '80px' , 
+
     // CRITICAL FIX: Forces the top bar and its popover above the bottom panels
     position: 'relative',
     zIndex: 50 
   },
   branding: {
-    textAlign: 'right'
+// 2. THE FIX: We rip the text out of the normal left-to-right flow 
+    // and pin it exactly to the middle of the topBar
+    position: 'absolute',
+    left: '50%',
+    transform: 'translate(-50% , -50%)',
+    top : '50%' , 
+	 whiteSpace : 'nowrap' , 
+    // Centers the text inside its own invisible box
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   goldText: {
     color: THEME.gold,
