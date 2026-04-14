@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ProfileComponent from "./ProfileComponent";
 import AdminDisplayer from '../AdminDisplayer' ;
 import MainPanelCorporate from './MainPanelCorporate'
-
+import UserHome from './UserHome' ;
 
 // --- 1. THE CUSTOM HOOK (Unchanged) ---
 const useOnClickOutside = (ref, handler) => {
@@ -60,10 +60,19 @@ const GuestPopUp = ({setCurrentPanel}) => {
       if (setCurrentPanel) {
         setCurrentPanel(() => MainPanelCorporate);
       }
-    }else {	
+    }else   {	
+	if (username === "user" && password === "user" ) {
 
+	setErrorMsg("");
+		setIsOpen(false);
+		if (setCurrentPanel){
+			setCurrentPanel( () => UserHome ) ;
+		}
+	}
+	    else{
       setErrorMsg("Invalid credentials.");
-	}	
+	    }	
+    }	
     }
   };
 
