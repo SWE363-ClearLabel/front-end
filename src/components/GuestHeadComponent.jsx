@@ -6,6 +6,7 @@ const Header = ({
   fontFamily = '"Courier New", Courier, monospace',
   textColor = "#d1d1d1",
   bgColor = "#ffffff",
+  setCurrentPanel = () => {} , 
 }) => {
   const styles = {
     headerContainer: {
@@ -47,7 +48,7 @@ const Header = ({
     <header style={styles.headerContainer}>
       <h1 style={styles.text3D}>{title}</h1>
       <div style={styles.profileWrapper}>
-        <GuestPopUp />
+        <GuestPopUp setCurrentPanel = {setCurrentPanel} />
       </div>
     </header>
   );

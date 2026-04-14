@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import ProfileComponent from "./ProfileComponent";
-import AdminPanel from './AdminPanel'
-
-import MainPanelCorporate from './MainPanelCorporate'
-
 
 // --- 1. THE CUSTOM HOOK (Unchanged) ---
 const useOnClickOutside = (ref, handler) => {
@@ -24,15 +20,12 @@ const useOnClickOutside = (ref, handler) => {
 };
 
 // --- 2. THE UI COMPONENT ---
-const GuestPopUp = ({setCurrentPanel}) => {
+const GuestPopUp = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   // THE NEW ROUTER STATE: Tracks which screen the popover is showing
   const [viewMode, setViewMode] = useState("default"); // 'default' | 'login'
-  // 2. NEW: State to track what the user types
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState(""); // Optional: To show bad passwords
+
   const popoverRef = useRef();
 
   // Close the menu AND reset the view mode when clicking outside
@@ -41,32 +34,6 @@ const GuestPopUp = ({setCurrentPanel}) => {
     // Reset view back to default after a tiny delay so it doesn't snap while closing
     setTimeout(() => setViewMode("default"), 200);
   });
-
-  const handleLoginSubmit = () => {
-    if (username === "admin" && password === "admin") {
-      setErrorMsg(""); // Clear errors
-      setIsOpen(false); // Optional: Close the menu on success
-
-      // FIRE THE TRIGGER passed from the parent!
-      if (setCurrentPanel) {
-        setCurrentPanel(() => AdminPanel);
-      }
-    } else 
-    {
-	    if (username === "company" && password === "company") {
-      setErrorMsg(""); // Clear errors
-      setIsOpen(false); // Optional: Close the menu on success
-
-      // FIRE THE TRIGGER passed from the parent!
-      if (setCurrentPanel) {
-        setCurrentPanel(() => MainPanelCorporate);
-      }
-    }else {	
-
-      setErrorMsg("Invalid credentials.");
-	}	
-    }
-  };
 
   const styles = {
     wrapper: { position: "relative", display: "inline-block" },
@@ -180,53 +147,25 @@ const GuestPopUp = ({setCurrentPanel}) => {
           ) : (
             // --- VIEW 2: LOGIN FORM ---
             <div style={{ width: "100%" }}>
-              {/* Show an error if they type the wrong thing */}
-              {errorMsg && (
-                <div
-                  style={{
-                    color: "#ff6b6b",
-                    fontSize: "12px",
-                    marginBottom: "10px",
-                    textAlign: "center",
-                  }}
-                >
-                  {errorMsg}
-                </div>
-              )}
-
               <input
                 type="text"
                 placeholder="USERNAME"
                 style={styles.inputField}
-                value={username} // Bind to state
-                onChange={(e) => setUsername(e.target.value)} // Update state on type
               />
               <input
                 type="password"
                 placeholder="PASSWORD"
                 style={styles.inputField}
-                onChange={(e) => setPassword(e.target.value)} // Update state on type
-                value={password}
               />
 
               <div style={styles.buttonRow}>
                 <button
                   style={styles.buttonSecondary}
-                  onClick={() => {
-                    setViewMode("default");
-                    setErrorMsg(""); // Clear errors if they click back
-                    setUsername(""); // Clear inputs
-                    setPassword("");
-                  }} // Navigates back
+                  onClick={() => setViewMode("default")} // Navigates back
                 >
                   BACK
                 </button>
-                <button
-                  style={{ ...styles.buttonMain, flex: 2 }}
-                  onClick={handleLoginSubmit}
-                >
-                  LOGIN
-                </button>
+                <button style={{ ...styles.buttonMain, flex: 2 }}>LOGIN</button>
               </div>
             </div>
           )}

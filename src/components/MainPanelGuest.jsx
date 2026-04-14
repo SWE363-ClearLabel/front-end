@@ -40,7 +40,7 @@ const Hover3DWrapper = ({ children, onClick }) => {
 };
 
 // --- 2. THE MAIN PANEL ---
-const ShowcasePanel = () => {
+const ShowcasePanel = ({setCurrentPanel} ) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   const styles = {
@@ -76,7 +76,7 @@ const ShowcasePanel = () => {
       {/* 1. THE HEADER */}
       <div style={{ ...styles.rowBounds, position: 'relative', zIndex: 50 }}>
         <Hover3DWrapper>
-          <Header title="CLEAR LABEL" />
+          <Header title="CLEAR LABEL" setCurrentPanel = {setCurrentPanel}/>
         </Hover3DWrapper>
       </div>
 

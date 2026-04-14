@@ -6,10 +6,10 @@ import MainPanelGuest from './components/MainPanelGuest'
 
 function CurrentPanel(){
 
-	const [ Current , SetCurrent ] = useState( () => MainPanelGuest ) ;
+	const [ Current , SetCurrent ] = useState( () => MainPanelGuest) ;
 
 	return (
-		<Current />
+		<Current setCurrentPanel = {SetCurrent} />
 	);
 }
 
