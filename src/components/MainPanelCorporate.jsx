@@ -1,21 +1,20 @@
-
 import React from 'react';
-import ProfileComponent from './ProfileComponent';
+// The new imports:
+import PremiumProfilePopover from './PremiumProfilePopover';
+import MainPanelGuest from './MainPanelGuest'; 
+
 import DashboardPanel_1 from './DashboardPanel_1';
 import DashboardPanel_2 from './DashboardPanel_2';
 import DashboardPanel_3 from './DashboardPanel_3';
 
-// adding styles and THEME -> passed down 
-// 1. THEME DEFINITION
 const THEME = {
-  backgroundColor: "#2e2b2bff",		//dark charcoal #2e2b2bff   dark blue #001B2E
+  backgroundColor: "#2e2b2bff",         
   textColor: "#FFFFFF",
-  fontFamily: "Luminari",		// Luminari  ,  Bahnschrift
+  fontFamily: "Luminari",               
   accentColor: [0, 255, 255],
   gold: "#FFD700"
 };
 
-// 2. STYLES OBJECT (Now defined so the render can see it)
 const styles = {
   container: {
     width: '100vw',
@@ -34,7 +33,10 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
+    // CRITICAL FIX: Forces the top bar and its popover above the bottom panels
+    position: 'relative',
+    zIndex: 50 
   },
   branding: {
     textAlign: 'right'
@@ -78,26 +80,20 @@ const styles = {
   },
   bottomRow: {
     width: '100%',
-    height: '600px', // Ensures Dashboard 3 has space to render the 3D map
+    height: '600px', 
     position: 'relative'
   }
 };
 
-
-
 class MainPanelCorporate extends React.Component {
   constructor(props) {
     super(props);
-    // Initializing state - notice how we keep the 
-    // data structure clean for the children.
     this.state = {
       portalTitle: "CLEAR LABEL",
       subtitle: "CORPORATE INSIGHTS PORTAL",
       marketHeader: "SAUDI MARKET INTELLIGENCE"
     };
   }
-// <profileComponent username="Cooperate Entity" role="Market Data" isLoggedIn="true" />   these three are injected !! 
-
 
   render() {
     return (
@@ -105,11 +101,19 @@ class MainPanelCorporate extends React.Component {
         {/* --- HEADER SECTION --- */}
         <header style={styles.header}>
           <div style={styles.topBar}>
-                <ProfileComponent 
-          username = "Cooperate Entity" 
-          role = "Market Data" 
-          isLoggedIn = "true"
-              />
+            
+            {/* INJECTION: The Premium Popover replaces the raw ProfileComponent */}
+            <PremiumProfilePopover 
+              username="Cooperate Entity" 
+              role="Market Data" 
+              isLoggedIn="true"
+              onSignOut={() => {
+                if (this.props.setCurrentPanel) {
+                  this.props.setCurrentPanel(() => MainPanelGuest);
+                }
+              }}
+            />
+
             <div style={styles.branding}>
               <h1 style={styles.goldText}>{this.state.portalTitle} <span style={styles.premium}>premium</span></h1>
               <p style={styles.subtitle}>{this.state.subtitle}</p>
@@ -120,9 +124,7 @@ class MainPanelCorporate extends React.Component {
 
         {/* --- MAIN CONTENT (PANELS) --- */}
         <main style={styles.panelsContainer}>
-        
-<div style={styles.topRow}>
-            {/* INJECTING THEME INTO CHILDREN */}
+          <div style={styles.topRow}>
             <DashboardPanel_1 
               backgroundColor={THEME.backgroundColor}
               textColor={THEME.textColor}
@@ -140,13 +142,12 @@ class MainPanelCorporate extends React.Component {
               backgroundColor={THEME.backgroundColor}
               textColor={THEME.textColor}
               fontFamily={THEME.fontFamily}
-	    />
+            />
           </div>
-	</main>
+        </main>
       </div>
     );
   }
 }
 
 export default MainPanelCorporate;
-
