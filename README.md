@@ -66,4 +66,13 @@ The focus was on:
 ---
 
 ## Team Contributions
+
 - Khalid Alotaibi **Admin:** Dashboard implementation, filtering logic, UI components, state handling  
+
+- Saad Alshlowiy **Company Guest** --> primary driver of the frontend UI components, panel routing, and initial repository setup. commits can be grouped into four main areas:
+
+Routing & State Management: successfully wired up the navigation flow, particularly the transitions from the Guest state to the Company, Admin, and User states using the CurrentPanel architecture.
+
+The Guest Panel: built out the first draft of the Guest interface, spending significant time perfecting the interactive ProfileComponent (making it clickable, fixing the blue highlight text-selection bug, and reusing it across different headers).
+
+The Corporate Panel & Dashboards: developed the first drafts of MainPanelCorporate, Dashboard_1,Dashboard_2 , and Dashboard_3, which included integrating a flexible Pie Chart component
