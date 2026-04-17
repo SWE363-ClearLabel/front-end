@@ -1,14 +1,15 @@
 import React from "react";
 import State from "./State";
+import MainPanelGuest from "./components/MainPanelGuest";
+import ProfileComponent from "./components/ProfileComponent";
 import AdminProfileModal from "./components/AdminProfileModal";
 import AdminStatCard from "./components/AdminStatCard";
 import AdminPanel from "./components/AdminPanel";
-import ProfileComponent from './components/ProfileComponent' 
+
 export default class AdminDisplayer extends State {
     constructor(props) {
         super(props);
 
-        // main admin state
         this.state = {
             showProfile: false,
             filter: "user",
@@ -50,28 +51,30 @@ export default class AdminDisplayer extends State {
         };
     }
 
-    // toggle profile modal
     profileHandler() {
         this.setState({
             showProfile: !this.state.showProfile
         });
     }
 
-    // switch filter
     setFilter(filter) {
         this.setState({
             filter: filter
         });
     }
 
-    // change view
     setView(view) {
         this.setState({
             currentView: view
         });
     }
 
-    // filter buttons
+    handleSignOut() {
+        if (this.props.setCurrentPanel) {
+            this.props.setCurrentPanel(MainPanelGuest);
+        }
+    }
+
     renderFilterButtons() {
         return (
             <div style={{ marginTop: "20px" }}>
@@ -113,7 +116,6 @@ export default class AdminDisplayer extends State {
         );
     }
 
-    // main dashboard
     renderDashboard(currentData) {
         return (
             <>
@@ -162,7 +164,6 @@ export default class AdminDisplayer extends State {
         );
     }
 
-    // positive / negative details
     renderDetailView(title, totalValue, currentData) {
         return (
             <>
@@ -260,26 +261,22 @@ export default class AdminDisplayer extends State {
                             <p style={{ margin: "6px 0 0 0", color: "#555" }}>admin dashboard</p>
                         </div>
 
-                        <button
+                        <div
                             onClick={() => this.profileHandler()}
-                            style={{
-                                border: "none",
-                                backgroundColor: "#d9d9d9",
-                                borderRadius: "30px",
-                                padding: "12px 20px",
-                                cursor: "pointer",
-                                fontWeight: "bold",
-                                color: "#222"
-                            }}
+                            style={{ cursor: "pointer" }}
                         >
-                            <ProfileComponent backgroundColor = "#ececec" />
-                        </button>
+                            <ProfileComponent
+                                username="ADMIN"
+                                role="admin dashboard"
+                                isLoggedIn={true}
+                            />
+                        </div>
                     </div>
 
                     <AdminProfileModal
                         show={this.state.showProfile}
                         onClose={() => this.profileHandler()}
-                        onSignOut={() => alert("Signed out")}
+                        onSignOut={() => this.handleSignOut()}
                     />
 
                     {this.state.currentView === "dashboard" &&
