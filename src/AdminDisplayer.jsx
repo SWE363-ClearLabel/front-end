@@ -30,7 +30,7 @@ export default class AdminDisplayer extends State {
             error: ""
         });
 
-        fetch(`http://localhost:5000/api/admin/dashboard?roleType=${roleType}`)
+        fetch(`https://front-end-9igq.onrender.com/api/admin/dashboard?roleType=${roleType}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Could not load admin data");
