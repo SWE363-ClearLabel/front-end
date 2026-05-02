@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo , useEffect , useState } from 'react';
 import * as topojson from 'topojson-client';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import worldData from './world.json'; 
@@ -24,20 +24,26 @@ const DashboardPanel_3 = ({
   textColor = "#FFFFFF",
   fontFamily = "monospace"
 }) => {
-  
+  const [userData, setUserData] = useState([]);
+useEffect(() => {
+    fetch('http://localhost:5000/dashBoardPanel_3/userDataLocation?count=1000')
+      .then(res => res.json())
+      .then(data => setUserData(data))
+      .catch(err => console.error(err));
+  }, []);
+
+
   const ksaPolygon = useMemo(() => {
     const geojson = topojson.feature(worldData, worldData.objects.countries);
     return geojson.features.find(f => String(f.id) === "682");
   }, []);
 
-  const userData1K = useMemo(() => generateSaudiUserData(), []);
 
-  const cleanData = useMemo(() => {
-    if (!ksaPolygon) return [];
-    return userData1K.filter(point => {
-      return booleanPointInPolygon(point, ksaPolygon);
-    });
-  }, [ksaPolygon, userData1K]);
+const cleanData = useMemo(() => {
+    if (!ksaPolygon || userData.length === 0) return [];
+    return userData.filter(point => booleanPointInPolygon(point, ksaPolygon));
+  }, [ksaPolygon, userData]);
+
 
   return (
     <div style={{
