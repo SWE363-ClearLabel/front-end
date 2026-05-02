@@ -3,6 +3,7 @@ import ProfileComponent from "./ProfileComponent";
 import AdminDisplayer from '../AdminDisplayer' ;
 import MainPanelCorporate from './MainPanelCorporate'
 import UserHome from './UserHome' ;
+import UserDashboard from "./MainUserPage";
 
 // --- 1. THE CUSTOM HOOK (Unchanged) ---
 const useOnClickOutside = (ref, handler) => {
@@ -66,7 +67,7 @@ const GuestPopUp = ({setCurrentPanel}) => {
 	setErrorMsg("");
 		setIsOpen(false);
 		if (setCurrentPanel){
-			setCurrentPanel( () => UserHome ) ;
+			setCurrentPanel( () => UserDashboard ) ;
 		}
 	}
 	    else{
