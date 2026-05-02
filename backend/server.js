@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-
+const  userDataLocationHandler  = require('./Company/UserDataLocationHandler');
 const flexibleEngagementChartHandler =
   require("./Company/FlexiableEngagementChartHandler");
 
@@ -52,7 +52,7 @@ const startServer = async () => {
   // ===== ROUTES =====
 
   app.get("/dashBoardPanel_1/ingredientsTrend", ingredientsTrendsHandler);
-
+app.get("/dashBoardPanel_3/userDataLocation", userDataLocationHandler);
   app.get(
     "/dashBoardPanel_1/flexiableEngagementChart",
     flexibleEngagementChartHandler
