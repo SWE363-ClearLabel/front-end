@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import UserHome from './components/UserHome'
+import UserDashboard from './components/MainUserPage'
 import MainPanelCorporate from './components/MainPanelCorporate' 
 import AdminDisplayer from './AdminDisplayer' 
 import MainPanelGuest from './components/MainPanelGuest' 
