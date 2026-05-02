@@ -1,6 +1,6 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-
+import { useState, useEffect } from 'react' ; 
 /*
 
 
@@ -19,17 +19,35 @@ const DEFAULT_PIE_DATA = [
 ];
 
 function FlexiablePieChart({ 
-    data = DEFAULT_PIE_DATA, // Default value if prop is missing
+    data = [], // Default value if prop is missing
     backgroundColor = "#8b8b8b", 
     textColor = "#FFFFFF",
     fontFamily = "monospace" 
 }) {
+
+	const [chartData, setChartData] = useState([]);
+
+useEffect(() => {
+    fetch('http://localhost:3000/dashBoardPanel_1/flexiablePieChart')
+        .then(async res => {
+            const text = await res.text(); // Get raw text first
+            try {
+                return JSON.parse(text); // Try to parse it
+            } catch (err) {
+                console.error("Server returned HTML instead of JSON:", text);
+                throw new Error("Invalid JSON response");
+            }
+        })
+        .then(data => setChartData(data))
+        .catch(err => console.error("Fetch error:", err));
+}, []);
+
      const config = {
     title: "USER PROFILE DISTRIBUTION",
     panelBg: "#8b8b8b",      // Background of the whole card
     textColor: "#FFFFFF",    // Color of all text
     chartInnerColor: "#000", // The color of the center hole
-    data: data ,          // you need to inject this ..
+    data: chartData ,          // you need to inject this ..
   };
     
   const styles = {
@@ -93,7 +111,7 @@ function FlexiablePieChart({
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={config.data}
+              data={chartData}
               cx="50%"
               cy="50%"
               innerRadius="60%"
@@ -113,7 +131,7 @@ function FlexiablePieChart({
       </div>
 
       <div style={styles.footer}>
-        {config.data.map((item, index) => (
+        {chartData.map((item, index) => (
           <div key={index} style={styles.legendItem}>
             <div style={{
               width: '14px', 

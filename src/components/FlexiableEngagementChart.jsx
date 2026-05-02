@@ -1,9 +1,9 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'; 
-import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-
+import { useState, useEffect } from 'react';
 
 // Sample data for months 1-12
+/*
 const defaultData = [
   { month: 1, value: 20 }, { month: 2, value: 35 }, { month: 3, value: 45 },
   { month: 4, value: 60 }, { month: 5, value: 55 }, { month: 6, value: 80 },
@@ -11,13 +11,13 @@ const defaultData = [
   { month: 10, value: 110 }, { month: 11, value: 100 }, { month: 12, value: 120 }
 ];
 
-
+*/
 
 const FlexibleEngagementChart = ({ 
   // Text & Content Props
   title = "MONTHLY ENGAGEMENT GROWTH",
   growthValue = "+12.5%",
-  monthData = defaultData,  //<<-------------   Pass your array of {month: 1, value: 10} here
+  monthData = [],  //<<-------------   Pass your array of {month: 1, value: 10} here
   
   // Style "Injections"
   width = "100%",               // <<<-------- inject dimentions
@@ -27,6 +27,18 @@ const FlexibleEngagementChart = ({
   textColor = "#d1d1d1",
   fontFamily = "monospace"
 }) => {
+const [data, setData] = useState({ growthValue: 0, monthData: [] });
+
+
+useEffect(() => {
+    fetch('http://localhost:3000/dashBoardPanel_1/flexiableEngagementChart')
+      .then(res => res.json())
+      .then(json => setData(json))
+      .then( () => console.log("FlexiableEngagementChart has got it from server !") )
+      .catch(err => console.error("API Linkage Failed"));
+  }, []);
+
+
 
   const containerStyle = {
     backgroundColor: backgroundColor,
@@ -50,13 +62,14 @@ const FlexibleEngagementChart = ({
       </h2>
       
       <div style={{ fontSize: '1.5rem', margin: '10px 0', fontWeight: 'bold' }}>
-        {growthValue}
+       {data.growthValue > 0 ? `+${data.growthValue}%` : `${data.growthValue}%`}
       </div>
+
 
       {/* This container handles the resizing logic */}
       <div style={{ width: '100%', flexGrow: 1 }}>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={monthData} margin={{ top: 5, right: 5, left: -35, bottom: 5 }}>
+          <BarChart data={data.monthData} margin={{ top: 5, right: 5, left: -35, bottom: 5 }}>
             <CartesianGrid vertical={false} stroke={textColor} strokeOpacity={0.2} />
             <XAxis 
               dataKey="month" 
