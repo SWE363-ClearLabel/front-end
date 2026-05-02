@@ -34,7 +34,7 @@ const IngredientTrendTracker = ({
  
   const [allData, setAllData] = useState({ data6M: [], data3M: [], data1M: [] });
 useEffect(() => {
-    fetch('http://localhost:3000/dashBoardPanel_1/ingredientsTrend')
+    fetch('http://localhost:5000/dashBoardPanel_1/ingredientsTrend')
       .then(res => res.json())
       .then(json => setAllData(json))
       .catch(err => console.error(err));

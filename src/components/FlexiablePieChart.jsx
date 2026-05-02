@@ -28,7 +28,7 @@ function FlexiablePieChart({
 	const [chartData, setChartData] = useState([]);
 
 useEffect(() => {
-    fetch('http://localhost:3000/dashBoardPanel_1/flexiablePieChart')
+    fetch('http://localhost:5000/dashBoardPanel_1/flexiablePieChart')
         .then(async res => {
             const text = await res.text(); // Get raw text first
             try {

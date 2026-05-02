@@ -31,7 +31,7 @@ const [data, setData] = useState({ growthValue: 0, monthData: [] });
 
 
 useEffect(() => {
-    fetch('http://localhost:3000/dashBoardPanel_1/flexiableEngagementChart')
+    fetch('http://localhost:5000/dashBoardPanel_1/flexiableEngagementChart')
       .then(res => res.json())
       .then(json => setData(json))
       .then( () => console.log("FlexiableEngagementChart has got it from server !") )
