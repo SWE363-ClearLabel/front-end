@@ -131,7 +131,9 @@ Response:
 
 ## Team Contributions
 
-- Khalid Alotaibi **Admin:** Dashboard implementation, filtering logic, UI components, state handling  
+- Khalid Alotaibi **Admin:** Dashboard implementation, filtering logic, UI components, state handling 
+
+- Hashim Alramadhan Regular **User Portal:** REST API route implementation for User Portal, frontend-backend data pipeline, and React state handling for the User Dashboard
 
 - Saad Alshlowiy **Company Guest** --> primary driver of the frontend UI components, panel routing, and initial repository setup. commits can be grouped into four main areas:
 
