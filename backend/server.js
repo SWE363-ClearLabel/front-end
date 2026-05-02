@@ -1,51 +1,94 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
-const  flexibleEngagementChartHandler = require('./Company/FlexiableEngagementChartHandler');
-const flexiablePieChartHandler = require('./Company/flexiablePieChartHandler');
-const ingredientsTrendsHandler = require('./Company/IngredientsTrackers');
+
+const flexibleEngagementChartHandler =
+  require("./Company/FlexiableEngagementChartHandler");
+
+const flexiablePieChartHandler =
+  require("./Company/flexiablePieChartHandler");
+
+const ingredientsTrendsHandler =
+  require("./Company/IngredientsTrackers");
 
 const connectDB = require("./config/db");
 const adminRoutes = require("./routes/adminRoutes");
 
-dotenv.config();
-
-connectDB();
-
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
-  methods: ['GET', 'POST'],
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST"],
   credentials: true
 }));
 
-
 app.use(express.json());
 
+const startServer = async () => {
+  const isProd = process.env.NODE_ENV === "production";
 
-app.get("/dashBoardPanel_1/ingredientsTrend", ingredientsTrendsHandler);
-app.get("/dashBoardPanel_1/flexiableEngagementChart", flexibleEngagementChartHandler);
-app.get("/dashBoardPanel_1/flexiablePieChart" , flexiablePieChartHandler ) ; 
+  try {
+    const uri = process.env.MONGO_URI;
 
+    if (!uri) {
+      throw new Error("MONGO_URI is missing in .env");
+    }
 
+    await connectDB();
+    console.log("MongoDB connected");
 
-app.get("/", (req, res) => {
+  } catch (err) {
+    console.error("MongoDB connection failed:", err.message);
+
+    if (isProd) {
+      console.error("Stopping server (production requires DB)");
+      process.exit(1);
+    }
+
+    console.warn("Continuing in DEV mode without database");
+  }
+
+  // ===== ROUTES =====
+
+  app.get("/dashBoardPanel_1/ingredientsTrend", ingredientsTrendsHandler);
+
+  app.get(
+    "/dashBoardPanel_1/flexiableEngagementChart",
+    flexibleEngagementChartHandler
+  );
+
+  app.get(
+    "/dashBoardPanel_1/flexiablePieChart",
+    flexiablePieChartHandler
+  );
+
+  app.use("/api/admin", adminRoutes);
+
+  app.get("/", (req, res) => {
     res.status(200).json({
-        message: "ClearLabel backend is running"
+      message: "Backend running (dev-safe mode)"
     });
-});
+  });
 
-app.use("/api/admin", adminRoutes);
-
-app.use((req, res) => {
+  app.use((req, res) => {
     res.status(404).json({
-        message: "Route not found"
+      message: "Route not found"
     });
-});
+  });
 
-const PORT = process.env.PORT || 5000;
+  app.use((err, req, res, next) => {
+    console.error("Unhandled error:", err);
+    res.status(500).json({
+      message: "Internal Server Error"
+    });
+  });
 
-app.listen(PORT, () => {
+  const PORT = process.env.PORT || 5000;
+
+  app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-});
+  });
+};
+
+startServer();
