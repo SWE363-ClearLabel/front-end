@@ -1,69 +1,133 @@
-# ClearLabel Front-End
-## Overview
-ClearLabel is a web-based application designed to improve transparency in food ingredient analysis. The system allows different types of users to interact with product data while providing analytical tools for monitoring usage patterns and engagement.
+# ClearLabel Application
 
-The application is built using React and follows a structured approach based on the **State Design Pattern** to manage different user roles.
+## Overview
+ClearLabel is a web-based system designed to enhance transparency in food ingredient analysis. The platform enables different user roles to interact with product data while providing analytical insights into user behavior and engagement.
+
+The system consists of a React-based front-end and a Node.js + Express + MongoDB back-end, following a structured and modular architecture.
 
 ---
+
 ## System Roles
 
 ### Guest
+- Basic access to product information
+- Limited interaction with system features
 
 ### User
+- Full interaction with product analysis features
+- Enhanced engagement and tracking
 
 ### Admin
-- Access a dashboard with analytical insights
-- Filter data between **Guest** and **User**
-- Monitor key metrics such as:
+- Access to analytics dashboard
+- Filter data between Guest and User
+- Monitor:
   - Saved images
   - Positive and negative interactions
   - Ingredient trends
   - Summary insights
-- Profile interface with modal interaction
+- Profile modal with sign-out functionality
 
 ### Company
+- Access to corporate-level dashboard and insights
+
+---
 
 ## Key Features
+
+### Front-End
 - Role-based rendering using the State Design Pattern
 - Dynamic UI updates based on user interaction
-- Filtering system for comparing different user types
-- Modular component-based design
+- Modular component-based architecture
 - Interactive admin dashboard
+
+### Back-End
+- RESTful API implementation using Express.js
+- MongoDB database integration
+- Data validation and error handling
+- Role-based analytics filtering (guest / user)
+- Seeded data for testing and demonstration
 
 ---
 
 ## Technologies Used
+
+### Front-End
 - React (Class Components)
 - JavaScript (ES6)
-- Inline Styling (CSS-in-JS)
+- CSS (Inline Styling)
 
+### Back-End
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- dotenv
+- nodemon
+
+---
 
 ## Installation
 
-1. Clone the repository:
-
+### 1. Clone the repository
 git clone https://github.com/SWE363-ClearLabel/front-end.git
-
-2. Navigate to the project directory:
 cd front-end
-3. Install dependencies:
+### 2. Front-End setup
 npm install
+npm run dev
+Open: http://localhost:5173/
+### 3. Back-End setup
+cd backend
+npm install
+Create a .env file inside backend:
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/clearlabel
+### 4. Run MongoDB
+mongod
+### 5. Seed database
+npm run seed
+### 6. Start server
+npm run dev
+Open: http://localhost:5000/
+
+---
+
+## Admin API Endpoints
+
+### Get Dashboard
+GET /api/admin/dashboard?roleType=user
+### Get Positive Clicks
+GET /api/admin/positive-clicks?roleType=user
+### Get Negative Clicks
+GET /api/admin/negative-clicks?roleType=user
+### Get Classification
+GET /api/admin/classification?roleType=user
+### Get Top Ingredients
+GET /api/admin/top-ingredients?roleType=user
+
+---
+
+## Validation Example
+GET /api/admin/dashboard?roleType=admin
+Response:
+{
+  "message": "roleType must be either guest or user"
+}
+
 ---
 ## Usage
-Run the development server:
-npm run dev
-Then open your browser and navigate to:
-http://localhost:5173/
-Use the role buttons (Guest, User, Admin, Company) to switch between system states and explore the application features.
----
-## Design Approach
-The user interface is developed based on the provided wireframes and design references.  
-The focus was on:
-- Clear layout and readability
-- Reusable components
-- Interactive and responsive elements
+- Use role buttons (Guest, User, Admin, Company) to switch views
+- Admin dashboard provides analytics with filtering
+- Backend APIs can be tested using browser or Postman
 
 ---
+
+## Design Approach
+- Structured using the State Design Pattern
+- Focus on modular, reusable components
+- Clean separation between front-end and back-end logic
+- Scalable architecture for future integration
+
+---
+
 
 ## Team Contributions
 
