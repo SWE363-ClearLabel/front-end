@@ -1,10 +1,10 @@
 import React from "react";
 import State from "./State";
 import MainPanelGuest from "./components/MainPanelGuest";
-import ProfileComponent from "./components/ProfileComponent";
 import AdminProfileModal from "./components/AdminProfileModal";
 import AdminStatCard from "./components/AdminStatCard";
 import AdminPanel from "./components/AdminPanel";
+import ProfileComponent from "./components/ProfileComponent";
 
 export default class AdminDisplayer extends State {
     constructor(props) {
@@ -14,41 +14,43 @@ export default class AdminDisplayer extends State {
             showProfile: false,
             filter: "user",
             currentView: "dashboard",
-            data: {
-                user: {
-                    savedImages: 12654,
-                    positiveClicks: 9854,
-                    negativeClicks: 3654,
-                    topIngredients: ["Xanthan Gum", "Pectin", "Satra"],
-                    summary: [
-                        "Registered users saved more scans.",
-                        "Higher engagement on detailed pages.",
-                        "More consistent usage patterns."
-                    ],
-                    classification: {
-                        safe: 52,
-                        moderate: 28,
-                        high: 20
-                    }
-                },
-                guest: {
-                    savedImages: 4300,
-                    positiveClicks: 2100,
-                    negativeClicks: 950,
-                    topIngredients: ["Citric Acid", "Sodium Benzoate", "Color Additives"],
-                    summary: [
-                        "Guests interact less frequently.",
-                        "Higher drop-off rate after scanning.",
-                        "Less engagement with detailed info."
-                    ],
-                    classification: {
-                        safe: 45,
-                        moderate: 35,
-                        high: 20
-                    }
-                }
-            }
+            data: null,
+            loading: false,
+            error: ""
         };
+    }
+
+    componentDidMount() {
+        this.loadAdminData(this.state.filter);
+    }
+
+    loadAdminData(roleType) {
+        this.setState({
+            loading: true,
+            error: ""
+        });
+
+        fetch(`http://localhost:5000/api/admin/dashboard?roleType=${roleType}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Could not load admin data");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                this.setState({
+                    data: data,
+                    loading: false,
+                    error: ""
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    data: null,
+                    loading: false,
+                    error: "Unable to load admin data. Make sure the backend is running."
+                });
+            });
     }
 
     profileHandler() {
@@ -59,8 +61,11 @@ export default class AdminDisplayer extends State {
 
     setFilter(filter) {
         this.setState({
-            filter: filter
+            filter: filter,
+            currentView: "dashboard"
         });
+
+        this.loadAdminData(filter);
     }
 
     setView(view) {
@@ -69,11 +74,11 @@ export default class AdminDisplayer extends State {
         });
     }
 
-    handleSignOut() {
-        if (this.props.setCurrentPanel) {
-            this.props.setCurrentPanel(MainPanelGuest);
-        }
+   handleSignOut() {
+    if (this.props.setCurrentPanel) {
+        this.props.setCurrentPanel(() => MainPanelGuest);
     }
+}
 
     renderFilterButtons() {
         return (
@@ -212,7 +217,7 @@ export default class AdminDisplayer extends State {
 
                     <AdminPanel title="SUMMARY INSIGHTS">
                         <ul style={{ margin: 0, paddingLeft: "20px", color: "#222", lineHeight: "1.9" }}>
-                            {currentData.summary.map((item, index) => (
+                            {currentData.summaryInsights.map((item, index) => (
                                 <li key={index}>{item}</li>
                             ))}
                         </ul>
@@ -231,7 +236,7 @@ export default class AdminDisplayer extends State {
     }
 
     render() {
-        const currentData = this.state.data[this.state.filter];
+        const currentData = this.state.data;
 
         return (
             <div
@@ -279,19 +284,31 @@ export default class AdminDisplayer extends State {
                         onSignOut={() => this.handleSignOut()}
                     />
 
-                    {this.state.currentView === "dashboard" &&
+                    {this.state.loading && (
+                        <AdminPanel title="LOADING">
+                            <p>Loading admin dashboard data...</p>
+                        </AdminPanel>
+                    )}
+
+                    {this.state.error && (
+                        <AdminPanel title="ERROR">
+                            <p>{this.state.error}</p>
+                        </AdminPanel>
+                    )}
+
+                    {!this.state.loading && !this.state.error && currentData && this.state.currentView === "dashboard" &&
                         this.renderDashboard(currentData)}
 
-                    {this.state.currentView === "positive" &&
+                    {!this.state.loading && !this.state.error && currentData && this.state.currentView === "positive" &&
                         this.renderDetailView(
-                            "TOTAL POSITIVE CLICKS (LAST 60 DAYS)",
+                            "TOTAL POSITIVE CLICKS",
                             currentData.positiveClicks,
                             currentData
                         )}
 
-                    {this.state.currentView === "negative" &&
+                    {!this.state.loading && !this.state.error && currentData && this.state.currentView === "negative" &&
                         this.renderDetailView(
-                            "TOTAL NEGATIVE CLICKS (LAST 60 DAYS)",
+                            "TOTAL NEGATIVE CLICKS",
                             currentData.negativeClicks,
                             currentData
                         )}
