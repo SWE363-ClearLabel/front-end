@@ -12,6 +12,8 @@ const flexiablePieChartHandler =
 const ingredientsTrendsHandler =
   require("./Company/IngredientsTrackers");
 
+const IngredientScan = require("./models/IngredientScan");
+
 const connectDB = require("./config/db");
 const adminRoutes = require("./routes/adminRoutes");
 
@@ -69,6 +71,20 @@ app.get("/dashBoardPanel_3/userDataLocation", userDataLocationHandler);
     res.status(200).json({
       message: "Backend running (dev-safe mode)"
     });
+  });
+
+  app.get("/api/scans/:username", async (req, res) => {
+    try {
+      // 1. Find all scans for this user
+      // 2. Sort by 'createdAt' descending (-1) so the newest is at the top
+      const userScans = await IngredientScan.find({ username: req.params.username }).sort({ createdAt: -1 });
+      
+      // 3. Send the array of data back to React
+      res.json(userScans);
+    } catch (error) {
+      console.error("Database fetch error:", error);
+      res.status(500).json({ error: "Failed to fetch history" });
+    }
   });
 
   app.use((req, res) => {
