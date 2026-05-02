@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UserHeader from "./UserHeaderComponent"; // Updated Import
 import PromptInput from "./PromptComponent";
 import CameraPortal from "./PictureComponent";
@@ -30,10 +30,23 @@ const Hover3DWrapper = ({ children, onClick, active }) => {
 const UserDashboard = ({ setCurrentPanel }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedScan, setSelectedScan] = useState(null);
-  const [history] = useState([
-    { id: 1, date: "2026-05-01", title: "Oat Milk Ingredients", result: "Mostly water and oats..." },
-    { id: 2, date: "2026-04-30", title: "Protein Bar", result: "High processed sugar content..." }
-  ]);
+  const [history, setHistory] = useState([]);
+  
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/scans/Hashim");
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+        setHistory(data); // Populate the sidebar with the database results
+      } catch (error) {
+        console.error("Failed to load history:", error);
+      }
+    };
+    
+    fetchHistory();
+  }, []);
 
   const styles = {
     container: { display: "flex", height: "100vh", backgroundColor: "#121212", color: "#efebc1", fontFamily: '"Courier New", Courier, monospace', overflow: "hidden" },
@@ -53,10 +66,10 @@ const UserDashboard = ({ setCurrentPanel }) => {
       <div style={styles.sidebar}>
         <h2 style={{ marginBottom: "30px", marginTop: "40px", fontSize: "1.2rem" }}>PREVIOUS CAPTURES</h2>
         {history.map((item) => (
-          <Hover3DWrapper key={item.id} active={selectedScan?.id === item.id} onClick={() => setSelectedScan(item)}>
+          <Hover3DWrapper key={item._id} active={selectedScan?.id === item.id} onClick={() => setSelectedScan(item)}>
             <div style={{ padding: "15px", fontSize: "0.85rem" }}>
-              <div style={{ opacity: 0.6, fontSize: "0.7rem" }}>{item.date}</div>
-              <div style={{ fontWeight: "bold" }}>{item.title}</div>
+              <div style={{ opacity: 0.6, fontSize: "0.7rem" }}>{new Date(item.createdAt).toLocaleDateString()}</div>
+              <div style={{ fontWeight: "bold" }}>{item.productName}</div>
             </div>
           </Hover3DWrapper>
         ))}
@@ -79,8 +92,8 @@ const UserDashboard = ({ setCurrentPanel }) => {
         <div style={{ width: "100%", maxWidth: "850px", flex: 1 }}>
           {selectedScan ? (
             <div style={{ padding: "30px", border: "1px dashed #efebc1", borderRadius: "24px", backgroundColor: "#1e1e1e" }}>
-              <h3 style={{ color: "#fff" }}>{selectedScan.title}</h3>
-              <p style={{ lineHeight: "1.6" }}>{selectedScan.result}</p>
+              <h3 style={{ color: "#fff" }}>{selectedScan.productName}</h3>
+              <p style={{ lineHeight: "1.6" }}>{selectedScan.aiResult}</p>
               <button onClick={() => setSelectedScan(null)} style={{ background: "none", border: "1px solid #efebc1", color: "#efebc1", padding: "5px 15px", cursor: "pointer", marginTop: "20px" }}>
                 Back to New Scan
               </button>
