@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 
 const default6M = [
   { name: 'Xanthan Gum', value: 22 },
@@ -21,10 +21,6 @@ const default1M = [
 ];
 
 const IngredientTrendTracker = ({ 
-  // Data Injections (One array for each button/state)
-  data6M = default6M,                      // <--------------- given from Parent 
-  data3M = default3M,                      // <--------------- given from Parent   
-  data1M = default1M,
   
   // Style Injections
   backgroundColor = "#8b8b8b",
@@ -35,14 +31,18 @@ const IngredientTrendTracker = ({
 }) => {
   // Local state to track which duration is selected
   const [activeTab, setActiveTab] = useState('6M');
-  const rawData = { '6M': data6M, '3M': data3M, '1M': data1M }[activeTab];
-  const sortedData = [...rawData].sort((a, b) => b.value - a.value);
+ 
+  const [allData, setAllData] = useState({ data6M: [], data3M: [], data1M: [] });
+useEffect(() => {
+    fetch('http://localhost:3000/dashBoardPanel_1/ingredientsTrend')
+      .then(res => res.json())
+      .then(json => setAllData(json))
+      .catch(err => console.error(err));
+  }, []);
+
+  const rawData = allData[`data${activeTab}`] || [];
+	const sortedData = [...rawData].sort((a, b) => b.value - a.value);
   // Logic to determine which dataset to display based on the activeTab
-  const currentData = {
-    '6M': data6M,
-    '3M': data3M,
-    '1M': data1M
-  }[activeTab];
 
   const styles = {
     container: {

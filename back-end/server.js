@@ -1,17 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const  flexibleEngagementChartHandler = require('./Company/FlexiableEngagementChartHandler');
 const flexiablePieChartHandler = require('./Company/flexiablePieChartHandler');
 const ingredientsTrendsHandler = require('./Company/IngredientsTrackers');
-
-const connectDB = require("./config/db");
-const adminRoutes = require("./routes/adminRoutes");
-
-dotenv.config();
-
-connectDB();
-
 const app = express();
 
 app.use(cors({
@@ -20,32 +11,20 @@ app.use(cors({
   credentials: true
 }));
 
-
 app.use(express.json());
-
-
 app.get("/dashBoardPanel_1/ingredientsTrend", ingredientsTrendsHandler);
 app.get("/dashBoardPanel_1/flexiableEngagementChart", flexibleEngagementChartHandler);
 app.get("/dashBoardPanel_1/flexiablePieChart" , flexiablePieChartHandler ) ; 
 
 
-
-app.get("/", (req, res) => {
-    res.status(200).json({
-        message: "ClearLabel backend is running"
-    });
+app.get("/hello", (req, res) => { 
+  res.send("hello response"); 
 });
 
-app.use("/api/admin", adminRoutes);
-
-app.use((req, res) => {
-    res.status(404).json({
-        message: "Route not found"
-    });
+app.get("/", (req, res) => { 
+  res.send("express server"); 
 });
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(3000, () => { 
+  console.log("Production-ready server on port 3000"); 
 });
